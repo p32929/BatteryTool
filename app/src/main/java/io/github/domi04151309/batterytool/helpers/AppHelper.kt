@@ -1,5 +1,6 @@
 package io.github.domi04151309.batterytool.helpers
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
@@ -45,13 +46,13 @@ object AppHelper {
                 P.PREF_APP_LIST, P.PREF_APP_LIST_DEFAULT
             )
         )
-        val forcedSet = ForcedSet(PreferenceManager.getDefaultSharedPreferences(c))
-        val commandArray: ArrayList<String> = ArrayList(appArray.length() / 2)
-        val services = Root.getServices()
-        val focused = if (PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
-                P.PREF_IGNORE_FOCUSED_APPS, P.PREF_IGNORE_FOCUSED_APPS_DEFAULT
-            )
-        ) Root.getFocusedApps() else PseudoHashSet()
+//        val forcedSet = ForcedSet(PreferenceManager.getDefaultSharedPreferences(c))
+//        val commandArray: ArrayList<String> = ArrayList(appArray.length() / 2)
+//        val services = Root.getServices()
+//        val focused = if (PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
+//                P.PREF_IGNORE_FOCUSED_APPS, P.PREF_IGNORE_FOCUSED_APPS_DEFAULT
+//            )
+//        ) Root.getFocusedApps() else PseudoHashSet()
         for (i in 0 until appArray.length()) {
             try {
                 val packageName = appArray.getString(i)

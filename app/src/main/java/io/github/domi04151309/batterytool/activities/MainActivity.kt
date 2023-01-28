@@ -1,5 +1,6 @@
 package io.github.domi04151309.batterytool.activities
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -97,17 +98,25 @@ class MainActivity : AppCompatActivity(),
             addPreferencesFromResource(R.xml.pref_main)
 
             c = requireContext()
+
+            var pd = ProgressDialog(c)
+            pd.setMessage("Closing apps")
+            pd.setTitle("Please wait")
+
             prefs = PreferenceManager.getDefaultSharedPreferences(c)
             categorySoon = findPreference("soon") ?: throw NullPointerException()
 //            categoryUnnecessary = findPreference("unnecessary") ?: throw NullPointerException()
             categoryStopped = findPreference("stopped") ?: throw NullPointerException()
 
             activity?.findViewById<FloatingActionButton>(R.id.hibernate)?.setOnClickListener {
+                pd.show()
+
                 AppHelper.hibernate(c)
                 Toast.makeText(c, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
                 Handler(Looper.getMainLooper()).postDelayed({
                     loadLists()
-                }, 1000)
+                    pd.dismiss()
+                }, 5000)
             }
         }
 
