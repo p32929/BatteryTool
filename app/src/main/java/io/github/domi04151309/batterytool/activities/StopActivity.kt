@@ -17,7 +17,7 @@ class StopActivity : Activity() {
         } else {
             AppHelper.hibernate(this)
             Toast.makeText(this, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
-            Root.shell("input keyevent 26")
+//            Root.shell("input keyevent 26")
         }
         finish()
     }
