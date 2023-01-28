@@ -33,17 +33,14 @@ class MainActivity : AppCompatActivity(),
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     private var themeId = ""
-    private fun getThemeId(): String =
-        PreferenceManager.getDefaultSharedPreferences(this)
-            .getString(P.PREF_THEME, P.PREF_THEME_DEFAULT) ?: P.PREF_THEME_DEFAULT
+    private fun getThemeId(): String = PreferenceManager.getDefaultSharedPreferences(this)
+        .getString(P.PREF_THEME, P.PREF_THEME_DEFAULT) ?: P.PREF_THEME_DEFAULT
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Theme.setNoActionBar(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.content, PreferenceFragment())
+        supportFragmentManager.beginTransaction().replace(R.id.content, PreferenceFragment())
             .commit()
 
         ContextCompat.startForegroundService(this, Intent(this, ForegroundService::class.java))
@@ -69,19 +66,15 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onPreferenceStartFragment(
-        caller: PreferenceFragmentCompat,
-        pref: Preference
+        caller: PreferenceFragmentCompat, pref: Preference
     ): Boolean {
         val fragment = supportFragmentManager.fragmentFactory.instantiate(
-            classLoader,
-            pref.fragment ?: throw IllegalStateException()
+            classLoader, pref.fragment ?: throw IllegalStateException()
         )
         fragment.arguments = pref.extras
         fragment.setTargetFragment(caller, 0)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.content, fragment)
-            .addToBackStack(null)
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.content, fragment)
+            .addToBackStack(null).commit()
         return true
     }
 
@@ -102,6 +95,7 @@ class MainActivity : AppCompatActivity(),
             var pd = ProgressDialog(c)
             pd.setMessage("Closing apps")
             pd.setTitle("Please wait")
+            pd.setCancelable(false)
 
             prefs = PreferenceManager.getDefaultSharedPreferences(c)
             categorySoon = findPreference("soon") ?: throw NullPointerException()
@@ -111,12 +105,14 @@ class MainActivity : AppCompatActivity(),
             activity?.findViewById<FloatingActionButton>(R.id.hibernate)?.setOnClickListener {
                 pd.show()
 
-                AppHelper.hibernate(c)
-                Toast.makeText(c, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
                 Handler(Looper.getMainLooper()).postDelayed({
-                    loadLists()
-                    pd.dismiss()
-                }, 5000)
+                    AppHelper.hibernate(c)
+                    Toast.makeText(c, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        loadLists()
+                        pd.dismiss()
+                    }, 3000)
+                }, 1000)
             }
         }
 
@@ -154,19 +150,16 @@ class MainActivity : AppCompatActivity(),
                     continue
                 }
                 preference.setOnPreferenceClickListener {
-                    val options = resources
-                        .getStringArray(R.array.main_click_dialog_options)
-                        .toMutableList()
+                    val options =
+                        resources.getStringArray(R.array.main_click_dialog_options).toMutableList()
                     val isForced = forcedSet.contains(it.summary.toString())
                     options.add(
-                        2,
-                        resources.getString(
+                        2, resources.getString(
                             if (isForced) R.string.main_click_dialog_turn_off_always
                             else R.string.main_click_dialog_turn_on_always
                         )
                     )
-                    AlertDialog.Builder(c)
-                        .setTitle(R.string.main_click_dialog_title)
+                    AlertDialog.Builder(c).setTitle(R.string.main_click_dialog_title)
                         .setItems(options.toTypedArray()) { _, which ->
                             when (which) {
                                 0 -> {
@@ -205,14 +198,11 @@ class MainActivity : AppCompatActivity(),
                                     loadLists()
                                 }
                             }
-                        }
-                        .setNegativeButton(android.R.string.cancel) { _, _ -> }
-                        .show()
+                        }.setNegativeButton(android.R.string.cancel) { _, _ -> }.show()
                     true
                 }
                 if (c.packageManager.getApplicationInfo(
-                        preference.summary.toString(),
-                        PackageManager.GET_META_DATA
+                        preference.summary.toString(), PackageManager.GET_META_DATA
                     ).flags and ApplicationInfo.FLAG_STOPPED != 0
                 ) preferenceStoppedArray.add(preference)
                 else preferenceSoonArray.add(preference)
