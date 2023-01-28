@@ -107,11 +107,11 @@ class MainActivity : AppCompatActivity(),
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     AppHelper.hibernate(c)
-                    Toast.makeText(c, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
                     Handler(Looper.getMainLooper()).postDelayed({
                         loadLists()
+                        Toast.makeText(c, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
                         pd.dismiss()
-                    }, 3000)
+                    }, 300)
                 }, 1000)
             }
         }
