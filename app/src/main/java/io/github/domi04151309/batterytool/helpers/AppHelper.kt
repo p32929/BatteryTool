@@ -12,29 +12,24 @@ import org.json.JSONArray
 object AppHelper {
 
     internal fun generatePreference(
-        c: Context,
-        packageName: String,
-        forced: ForcedSet
+        c: Context, packageName: String, forced: ForcedSet
     ): Preference {
         return Preference(c).let {
             it.icon = c.packageManager.getApplicationIcon(packageName)
             it.title = c.packageManager.getApplicationLabel(
                 c.packageManager.getApplicationInfo(
-                    packageName,
-                    PackageManager.GET_META_DATA
+                    packageName, PackageManager.GET_META_DATA
                 )
             )
             it.summary = packageName
-            if (forced.contains(packageName)) it.title = it.title as String +
-                    " " +
-                    c.resources.getString(R.string.main_forced)
+            if (forced.contains(packageName)) it.title =
+                it.title as String + " " + c.resources.getString(R.string.main_forced)
             it
         }
     }
 
     internal fun generatePreference(
-        c: Context,
-        applicationInfo: ApplicationInfo
+        c: Context, applicationInfo: ApplicationInfo
     ): Preference {
         return Preference(c).let {
             it.icon = applicationInfo.loadIcon(c.packageManager)
@@ -53,8 +48,7 @@ object AppHelper {
         val forcedSet = ForcedSet(PreferenceManager.getDefaultSharedPreferences(c))
         val commandArray: ArrayList<String> = ArrayList(appArray.length() / 2)
         val services = Root.getServices()
-        val focused = if (
-            PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
+        val focused = if (PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
                 P.PREF_IGNORE_FOCUSED_APPS, P.PREF_IGNORE_FOCUSED_APPS_DEFAULT
             )
         ) Root.getFocusedApps() else PseudoHashSet()
@@ -73,12 +67,13 @@ object AppHelper {
 //
 //                }
 
-                commandArray.add("am force-stop $packageName")
+//                commandArray.add("am force-stop $packageName")
+                Root.shell("am force-stop $packageName")
             } catch (e: PackageManager.NameNotFoundException) {
                 continue
             }
         }
-        if (commandArray.isNotEmpty()) Root.shell(commandArray.toTypedArray())
+//        if (commandArray.isNotEmpty()) Root.shell(commandArray.toTypedArray())
     }
 
     internal fun hibernate(c: Context) {
@@ -87,8 +82,7 @@ object AppHelper {
         if (whitelistMusicApps) {
             NotificationService.getInstance()?.getPlayingPackageName { packageName ->
                 hibernateApps(
-                    c,
-                    packageName
+                    c, packageName
                 )
             }
         } else {
