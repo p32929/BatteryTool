@@ -5,10 +5,6 @@
         android:title="@string/main_stopped_soon" />
 
     <PreferenceCategory
-        android:key="unnecessary"
-        android:title="@string/main_stopped_unnecessary" />
-
-    <PreferenceCategory
         android:key="stopped"
         android:title="@string/main_stopped" />
 </PreferenceScreen>

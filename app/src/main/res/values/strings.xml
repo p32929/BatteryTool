@@ -18,7 +18,6 @@
     <string name="str_security">Security</string>
 
     <string name="main_stopped_soon">Will get stopped soon</string>
-    <string name="main_stopped_unnecessary">No need to stop</string>
     <string name="main_stopped">Stopped</string>
     <string name="main_empty">Nothing to show here</string>
     <string name="main_empty_summary">It seems that no app falls into this category</string>

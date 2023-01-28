@@ -89,7 +89,8 @@ class MainActivity : AppCompatActivity(),
         private lateinit var c: Context
         private lateinit var prefs: SharedPreferences
         private lateinit var categorySoon: PreferenceCategory
-        private lateinit var categoryUnnecessary: PreferenceCategory
+
+        //        private lateinit var categoryUnnecessary: PreferenceCategory
         private lateinit var categoryStopped: PreferenceCategory
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -98,7 +99,7 @@ class MainActivity : AppCompatActivity(),
             c = requireContext()
             prefs = PreferenceManager.getDefaultSharedPreferences(c)
             categorySoon = findPreference("soon") ?: throw NullPointerException()
-            categoryUnnecessary = findPreference("unnecessary") ?: throw NullPointerException()
+//            categoryUnnecessary = findPreference("unnecessary") ?: throw NullPointerException()
             categoryStopped = findPreference("stopped") ?: throw NullPointerException()
 
             activity?.findViewById<FloatingActionButton>(R.id.hibernate)?.setOnClickListener {
@@ -127,13 +128,13 @@ class MainActivity : AppCompatActivity(),
 
         private fun loadLists() {
             categorySoon.removeAll()
-            categoryUnnecessary.removeAll()
+//            categoryUnnecessary.removeAll()
             categoryStopped.removeAll()
 
             val appArray = JSONArray(prefs.getString(P.PREF_APP_LIST, P.PREF_APP_LIST_DEFAULT))
             val preferenceSoonArray: ArrayList<Preference> = ArrayList(appArray.length() / 2)
             val preferenceStoppedArray: ArrayList<Preference> = ArrayList(appArray.length() / 2)
-            val services = Root.getServices()
+//            val services = Root.getServices()
             val forcedSet = ForcedSet(prefs)
 
             var preference: Preference
@@ -208,23 +209,26 @@ class MainActivity : AppCompatActivity(),
                 else preferenceSoonArray.add(preference)
             }
             var isSoonEmpty = true
-            var isUnnecessaryEmpty = true
+//            var isUnnecessaryEmpty = true
             for (item in preferenceSoonArray.sortedWith(compareBy { it.title.toString() })) {
-                if (
-                    item.summary != null
-                    && (services.contains(item.summary ?: throw IllegalStateException())
-                            || forcedSet.contains(item.summary.toString()))
-                ) {
-                    categorySoon.addPreference(item)
-                    isSoonEmpty = false
-                } else {
-                    categoryUnnecessary.addPreference(item)
-                    isUnnecessaryEmpty = false
-                }
+//                if (
+//                    item.summary != null
+//                    && (services.contains(item.summary ?: throw IllegalStateException())
+//                            || forcedSet.contains(item.summary.toString()))
+//                ) {
+//                    categorySoon.addPreference(item)
+//                    isSoonEmpty = false
+//                } else {
+//                    categoryUnnecessary.addPreference(item)
+//                    isUnnecessaryEmpty = false
+//                }
+
+                categorySoon.addPreference(item)
+                isSoonEmpty = false
             }
 
             if (isSoonEmpty) categorySoon.addPreference(generateEmptyListIndicator())
-            if (isUnnecessaryEmpty) categoryUnnecessary.addPreference(generateEmptyListIndicator())
+//            if (isUnnecessaryEmpty) categoryUnnecessary.addPreference(generateEmptyListIndicator())
 
             if (preferenceStoppedArray.isEmpty()) {
                 categoryStopped.addPreference(generateEmptyListIndicator())

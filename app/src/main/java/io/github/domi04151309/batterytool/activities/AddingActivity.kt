@@ -130,7 +130,9 @@ class AddingActivity : AppCompatActivity(),
                 val currentList = JSONArray(
                     prefs.getString(P.PREF_APP_LIST, P.PREF_APP_LIST_DEFAULT)
                 )
-                for (item in addingArray) currentList.put(item)
+                for (item in addingArray) {
+                    currentList.put(item)
+                }
                 prefs.edit().putString(P.PREF_APP_LIST, currentList.toString()).apply()
                 requireActivity().finish()
             }

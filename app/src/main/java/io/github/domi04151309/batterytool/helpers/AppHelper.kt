@@ -61,15 +61,19 @@ object AppHelper {
         for (i in 0 until appArray.length()) {
             try {
                 val packageName = appArray.getString(i)
-                if (
-                    !packageName.equals(playingMusicPackage)
-                    && !focused.contains(packageName)
-                    && (c.packageManager.getApplicationInfo(
-                        packageName,
-                        PackageManager.GET_META_DATA
-                    ).flags and ApplicationInfo.FLAG_STOPPED == 0)
-                    && (services.contains(packageName) || forcedSet.contains(packageName))
-                ) commandArray.add("am force-stop $packageName")
+//                if (
+//                    !packageName.equals(playingMusicPackage)
+//                    && !focused.contains(packageName)
+//                    && (c.packageManager.getApplicationInfo(
+//                        packageName,
+//                        PackageManager.GET_META_DATA
+//                    ).flags and ApplicationInfo.FLAG_STOPPED == 0)
+//                    && (services.contains(packageName) || forcedSet.contains(packageName))
+//                ) {
+//
+//                }
+
+                commandArray.add("am force-stop $packageName")
             } catch (e: PackageManager.NameNotFoundException) {
                 continue
             }
