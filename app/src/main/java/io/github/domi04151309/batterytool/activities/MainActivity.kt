@@ -91,28 +91,15 @@ class MainActivity : AppCompatActivity(),
             addPreferencesFromResource(R.xml.pref_main)
 
             c = requireContext()
-
-            var pd = ProgressDialog(c)
-            pd.setMessage("Closing apps")
-            pd.setTitle("Please wait")
-            pd.setCancelable(false)
-
             prefs = PreferenceManager.getDefaultSharedPreferences(c)
             categorySoon = findPreference("soon") ?: throw NullPointerException()
 //            categoryUnnecessary = findPreference("unnecessary") ?: throw NullPointerException()
             categoryStopped = findPreference("stopped") ?: throw NullPointerException()
 
             activity?.findViewById<FloatingActionButton>(R.id.hibernate)?.setOnClickListener {
-                pd.show()
-
-                Handler(Looper.getMainLooper()).postDelayed({
-                    AppHelper.hibernate(c)
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        loadLists()
-                        Toast.makeText(c, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
-                        pd.dismiss()
-                    }, 3000)
-                }, 500)
+                AppHelper.hibernate(c)
+                loadLists()
+                Toast.makeText(c, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
             }
         }
 
