@@ -8,7 +8,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 32
         versionCode 120
-        versionName "1.2.0"
+        versionName "1.2.0Fay"
     }
     buildTypes {
         debug {
