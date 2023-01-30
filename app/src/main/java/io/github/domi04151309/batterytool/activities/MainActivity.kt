@@ -98,8 +98,11 @@ class MainActivity : AppCompatActivity(),
 
             activity?.findViewById<FloatingActionButton>(R.id.hibernate)?.setOnClickListener {
                 AppHelper.hibernate(c)
-                loadLists()
-                Toast.makeText(c, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    loadLists()
+                    Toast.makeText(c, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
+                }, 2000)
+
             }
         }
 

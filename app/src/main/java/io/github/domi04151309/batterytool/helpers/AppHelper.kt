@@ -47,7 +47,7 @@ object AppHelper {
             )
         )
 //        val forcedSet = ForcedSet(PreferenceManager.getDefaultSharedPreferences(c))
-//        val commandArray: ArrayList<String> = ArrayList(appArray.length() / 2)
+        val commandArray: ArrayList<String> = ArrayList()
 //        val services = Root.getServices()
 //        val focused = if (PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
 //                P.PREF_IGNORE_FOCUSED_APPS, P.PREF_IGNORE_FOCUSED_APPS_DEFAULT
@@ -68,13 +68,13 @@ object AppHelper {
 //
 //                }
 
-//                commandArray.add("am force-stop $packageName")
-                Root.shell("am force-stop $packageName")
-            } catch (e: PackageManager.NameNotFoundException) {
+                commandArray.add("am force-stop $packageName")
+//                Root.shell("am force-stop $packageName")
+            } catch (e: Exception) {
                 continue
             }
         }
-//        if (commandArray.isNotEmpty()) Root.shell(commandArray.toTypedArray())
+        if (commandArray.isNotEmpty()) Root.shell(commandArray.toTypedArray())
     }
 
     internal fun hibernate(c: Context) {
