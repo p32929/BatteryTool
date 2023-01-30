@@ -96,13 +96,19 @@ class MainActivity : AppCompatActivity(),
 //            categoryUnnecessary = findPreference("unnecessary") ?: throw NullPointerException()
             categoryStopped = findPreference("stopped") ?: throw NullPointerException()
 
+            var pd = ProgressDialog(c)
+            pd.setMessage("Closing apps")
+            pd.setTitle("Please wait")
+            pd.setCancelable(false)
+
             activity?.findViewById<FloatingActionButton>(R.id.hibernate)?.setOnClickListener {
-                AppHelper.hibernate(c)
+                pd.show()
+                var timeout = AppHelper.hibernate(c)
                 Handler(Looper.getMainLooper()).postDelayed({
                     loadLists()
                     Toast.makeText(c, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
-                }, 2000)
-
+                    pd.dismiss()
+                }, timeout.toLong() * 100)
             }
         }
 

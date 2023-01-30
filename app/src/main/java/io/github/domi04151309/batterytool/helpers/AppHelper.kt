@@ -40,7 +40,7 @@ object AppHelper {
         }
     }
 
-    private fun hibernateApps(c: Context, playingMusicPackage: String?) {
+    private fun hibernateApps(c: Context, playingMusicPackage: String?): Int {
         val appArray = JSONArray(
             PreferenceManager.getDefaultSharedPreferences(c).getString(
                 P.PREF_APP_LIST, P.PREF_APP_LIST_DEFAULT
@@ -75,9 +75,10 @@ object AppHelper {
             }
         }
         if (commandArray.isNotEmpty()) Root.shell(commandArray.toTypedArray())
+        return commandArray.size;
     }
 
-    internal fun hibernate(c: Context) {
+    internal fun hibernate(c: Context): Int {
         val whitelistMusicApps = PreferenceManager.getDefaultSharedPreferences(c)
             .getBoolean(P.PREF_ALLOW_MUSIC, P.PREF_ALLOW_MUSIC_DEFAULT)
         if (whitelistMusicApps) {
@@ -86,8 +87,9 @@ object AppHelper {
                     c, packageName
                 )
             }
+            return 0
         } else {
-            hibernateApps(c, null)
+            return hibernateApps(c, null)
         }
     }
 }
