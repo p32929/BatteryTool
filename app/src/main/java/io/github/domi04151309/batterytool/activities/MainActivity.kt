@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity(),
                     loadLists()
                     Toast.makeText(c, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
                     pd.dismiss()
-                }, timeout.toLong() * 100)
+                }, timeout.toLong() * 25)
             }
         }
 
