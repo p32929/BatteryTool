@@ -1,6 +1,5 @@
 package io.github.domi04151309.batterytool.helpers
 
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
@@ -46,35 +45,48 @@ object AppHelper {
                 P.PREF_APP_LIST, P.PREF_APP_LIST_DEFAULT
             )
         )
-//        val forcedSet = ForcedSet(PreferenceManager.getDefaultSharedPreferences(c))
-        val commandArray: ArrayList<String> = ArrayList()
-//        val services = Root.getServices()
-//        val focused = if (PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
-//                P.PREF_IGNORE_FOCUSED_APPS, P.PREF_IGNORE_FOCUSED_APPS_DEFAULT
-//            )
-//        ) Root.getFocusedApps() else PseudoHashSet()
+        val runningServices = Root.getServices()
+        val focusedApps = if (PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
+                P.PREF_IGNORE_FOCUSED_APPS, P.PREF_IGNORE_FOCUSED_APPS_DEFAULT
+            )
+        ) Root.getFocusedApps() else PseudoHashSet()
+
+        val shouldIgnoreFocussed = PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
+            P.PREF_IGNORE_FOCUSED_APPS, P.PREF_IGNORE_FOCUSED_APPS_DEFAULT
+        )
+
+        val shouldIgnoreMusicApp = PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
+            P.PREF_ALLOW_MUSIC, P.PREF_ALLOW_MUSIC_DEFAULT
+        )
+
+        fun isAppFocussed(packageName: String?): Boolean {
+            return runningServices.contains(packageName) || focusedApps.contains(packageName.toString())
+        }
+
+        fun isAppPlayingMusic(packageName: String): Boolean {
+            return playingMusicPackage.equals(packageName)
+        }
+
         for (i in 0 until appArray.length()) {
             try {
                 val packageName = appArray.getString(i)
-//                if (
-//                    !packageName.equals(playingMusicPackage)
-//                    && !focused.contains(packageName)
-//                    && (c.packageManager.getApplicationInfo(
-//                        packageName,
-//                        PackageManager.GET_META_DATA
-//                    ).flags and ApplicationInfo.FLAG_STOPPED == 0)
-//                    && (services.contains(packageName) || forcedSet.contains(packageName))
-//                ) {
-//
-//                }
+                if (shouldIgnoreFocussed) {
+                    if (isAppFocussed(packageName)) {
+                        continue
+                    }
+                }
 
-//                commandArray.add("am force-stop $packageName")
+                if (shouldIgnoreMusicApp) {
+                    if (isAppPlayingMusic(packageName)) {
+                        continue
+                    }
+                }
+
                 Root.shell("am force-stop $packageName")
             } catch (e: Exception) {
                 continue
             }
         }
-//        if (commandArray.isNotEmpty()) Root.shell(commandArray.toTypedArray())
     }
 
     internal fun hibernate(c: Context) {
