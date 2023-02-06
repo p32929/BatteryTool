@@ -45,43 +45,35 @@ object AppHelper {
                 P.PREF_APP_LIST, P.PREF_APP_LIST_DEFAULT
             )
         )
-        val runningServices = Root.getServices()
-        val focusedApps = if (PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
-                P.PREF_IGNORE_FOCUSED_APPS, P.PREF_IGNORE_FOCUSED_APPS_DEFAULT
-            )
-        ) Root.getFocusedApps() else PseudoHashSet()
 
-        val shouldIgnoreFocussed = PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
-            P.PREF_IGNORE_FOCUSED_APPS, P.PREF_IGNORE_FOCUSED_APPS_DEFAULT
-        )
+//        val runningServices = Root.getServices()
+//        val focusedApps = if (PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
+//                P.PREF_IGNORE_FOCUSED_APPS, P.PREF_IGNORE_FOCUSED_APPS_DEFAULT
+//            )
+//        ) Root.getFocusedApps() else PseudoHashSet()
+//
+//        val shouldIgnoreFocussed = PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
+//            P.PREF_IGNORE_FOCUSED_APPS, P.PREF_IGNORE_FOCUSED_APPS_DEFAULT
+//        )
+//
+//        val shouldIgnoreMusicApp = PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
+//            P.PREF_ALLOW_MUSIC, P.PREF_ALLOW_MUSIC_DEFAULT
+//        )
+//
+//        fun isAppFocussed(packageName: String?): Boolean {
+//            val appIsFocussed = focusedApps.contains(packageName.toString())
+//            return appIsFocussed
+//        }
+//
+//        fun isAppPlayingMusic(packageName: String): Boolean {
+//            return playingMusicPackage.equals(packageName)
+//        }
 
-        val shouldIgnoreMusicApp = PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
-            P.PREF_ALLOW_MUSIC, P.PREF_ALLOW_MUSIC_DEFAULT
-        )
-
-        fun isAppFocussed(packageName: String?): Boolean {
-            return runningServices.contains(packageName) || focusedApps.contains(packageName.toString())
-        }
-
-        fun isAppPlayingMusic(packageName: String): Boolean {
-            return playingMusicPackage.equals(packageName)
-        }
+        print("Hibernating...")
 
         for (i in 0 until appArray.length()) {
             try {
                 val packageName = appArray.getString(i)
-                if (shouldIgnoreFocussed) {
-                    if (isAppFocussed(packageName)) {
-                        continue
-                    }
-                }
-
-                if (shouldIgnoreMusicApp) {
-                    if (isAppPlayingMusic(packageName)) {
-                        continue
-                    }
-                }
-
                 Root.shell("am force-stop $packageName")
             } catch (e: Exception) {
                 continue
