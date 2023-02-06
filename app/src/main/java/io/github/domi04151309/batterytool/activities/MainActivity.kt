@@ -102,13 +102,17 @@ class MainActivity : AppCompatActivity(),
             pd.setCancelable(false)
 
             activity?.findViewById<FloatingActionButton>(R.id.hibernate)?.setOnClickListener {
-                pd.show()
-                var timeout = AppHelper.hibernate(c) * 50 + 1000
-                Handler(Looper.getMainLooper()).postDelayed({
-                    loadLists()
-                    Toast.makeText(c, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
-                    pd.dismiss()
-                }, timeout.toLong())
+                AppHelper.hibernate(c)
+                loadLists()
+                Toast.makeText(c, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
+
+//                pd.show()
+//                var timeout = AppHelper.hibernate(c) * 50 + 1000
+//                Handler(Looper.getMainLooper()).postDelayed({
+//                    loadLists()
+//                    Toast.makeText(c, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
+//                    pd.dismiss()
+//                }, timeout.toLong())
             }
         }
 
