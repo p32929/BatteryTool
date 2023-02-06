@@ -7,8 +7,8 @@ android {
         applicationId "io.github.domi04151309.batterytool"
         minSdkVersion 23
         targetSdkVersion 32
-        versionCode 999
-        versionName "1.2.0Fay4"
+        versionCode 1001
+        versionName "fay.1001"
     }
     buildTypes {
         debug {
