@@ -8,7 +8,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 32
         versionCode 1001
-        versionName "fay.1001"
+        versionName "p32929.1001"
     }
     buildTypes {
         debug {
