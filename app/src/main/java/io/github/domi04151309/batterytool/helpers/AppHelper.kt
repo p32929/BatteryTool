@@ -39,13 +39,13 @@ object AppHelper {
         }
     }
 
-    private fun hibernateApps(c: Context, playingMusicPackage: String?) {
-        val appArray = JSONArray(
-            PreferenceManager.getDefaultSharedPreferences(c).getString(
-                P.PREF_APP_LIST, P.PREF_APP_LIST_DEFAULT
-            )
-        )
-
+//    private fun hibernateApps(c: Context) {
+//        val appArray = JSONArray(
+//            PreferenceManager.getDefaultSharedPreferences(c).getString(
+//                P.PREF_APP_LIST, P.PREF_APP_LIST_DEFAULT
+//            )
+//        )
+//
 //        val runningServices = Root.getServices()
 //        val focusedApps = if (PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
 //                P.PREF_IGNORE_FOCUSED_APPS, P.PREF_IGNORE_FOCUSED_APPS_DEFAULT
@@ -68,8 +68,25 @@ object AppHelper {
 //        fun isAppPlayingMusic(packageName: String): Boolean {
 //            return playingMusicPackage.equals(packageName)
 //        }
+//
+//        print("Hibernating...")
+//
+//        for (i in 0 until appArray.length()) {
+//            try {
+//                val packageName = appArray.getString(i)
+//                Root.shell("am force-stop $packageName")
+//            } catch (e: Exception) {
+//                continue
+//            }
+//        }
+//    }
 
-        print("Hibernating...")
+    internal fun hibernate(c: Context) {
+        val appArray = JSONArray(
+            PreferenceManager.getDefaultSharedPreferences(c).getString(
+                P.PREF_APP_LIST, P.PREF_APP_LIST_DEFAULT
+            )
+        )
 
         for (i in 0 until appArray.length()) {
             try {
@@ -79,19 +96,18 @@ object AppHelper {
                 continue
             }
         }
-    }
 
-    internal fun hibernate(c: Context) {
-        val whitelistMusicApps = PreferenceManager.getDefaultSharedPreferences(c)
-            .getBoolean(P.PREF_ALLOW_MUSIC, P.PREF_ALLOW_MUSIC_DEFAULT)
-        if (whitelistMusicApps) {
-            NotificationService.getInstance()?.getPlayingPackageName { packageName ->
-                hibernateApps(
-                    c, packageName
-                )
-            }
-        } else {
-            hibernateApps(c, null)
-        }
+//        //////
+//        val whitelistMusicApps = PreferenceManager.getDefaultSharedPreferences(c)
+//            .getBoolean(P.PREF_ALLOW_MUSIC, P.PREF_ALLOW_MUSIC_DEFAULT)
+//        if (whitelistMusicApps) {
+//            NotificationService.getInstance()?.getPlayingPackageName { packageName ->
+//
+//            }
+//        } else {
+//            hibernateApps(c, null)
+//        }
+
+//        hibernateApps(c)
     }
 }
