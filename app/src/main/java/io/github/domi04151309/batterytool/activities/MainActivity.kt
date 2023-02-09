@@ -103,16 +103,17 @@ class MainActivity : AppCompatActivity(),
 
             activity?.findViewById<FloatingActionButton>(R.id.hibernate)?.setOnClickListener {
                 pd.show()
-                val halfSecond: Int = 500
+                val constantDelay: Int = 500
                 Handler(Looper.getMainLooper()).postDelayed({
                     AppHelper.hibernateFromUi(c)
 
                     Handler(Looper.getMainLooper()).postDelayed({
+                        loadLists()
                         pd.dismiss()
                         Toast.makeText(c, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
-                    }, halfSecond.toLong())
+                    }, constantDelay.toLong())
 
-                }, halfSecond.toLong())
+                }, constantDelay.toLong())
             }
         }
 
