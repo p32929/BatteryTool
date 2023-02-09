@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import io.github.domi04151309.batterytool.R
-import io.github.domi04151309.batterytool.services.NotificationService
 import org.json.JSONArray
 
 object AppHelper {
@@ -39,49 +38,27 @@ object AppHelper {
         }
     }
 
-//    private fun hibernateApps(c: Context) {
-//        val appArray = JSONArray(
-//            PreferenceManager.getDefaultSharedPreferences(c).getString(
-//                P.PREF_APP_LIST, P.PREF_APP_LIST_DEFAULT
-//            )
-//        )
-//
-//        val runningServices = Root.getServices()
-//        val focusedApps = if (PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
-//                P.PREF_IGNORE_FOCUSED_APPS, P.PREF_IGNORE_FOCUSED_APPS_DEFAULT
-//            )
-//        ) Root.getFocusedApps() else PseudoHashSet()
-//
-//        val shouldIgnoreFocussed = PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
-//            P.PREF_IGNORE_FOCUSED_APPS, P.PREF_IGNORE_FOCUSED_APPS_DEFAULT
-//        )
-//
-//        val shouldIgnoreMusicApp = PreferenceManager.getDefaultSharedPreferences(c).getBoolean(
-//            P.PREF_ALLOW_MUSIC, P.PREF_ALLOW_MUSIC_DEFAULT
-//        )
-//
-//        fun isAppFocussed(packageName: String?): Boolean {
-//            val appIsFocussed = focusedApps.contains(packageName.toString())
-//            return appIsFocussed
-//        }
-//
-//        fun isAppPlayingMusic(packageName: String): Boolean {
-//            return playingMusicPackage.equals(packageName)
-//        }
-//
-//        print("Hibernating...")
-//
-//        for (i in 0 until appArray.length()) {
-//            try {
-//                val packageName = appArray.getString(i)
-//                Root.shell("am force-stop $packageName")
-//            } catch (e: Exception) {
-//                continue
-//            }
-//        }
-//    }
+    internal fun hibernateFromBackground(c: Context) {
+        val appArray = JSONArray(
+            PreferenceManager.getDefaultSharedPreferences(c).getString(
+                P.PREF_APP_LIST, P.PREF_APP_LIST_DEFAULT
+            )
+        )
+        val commandArray: ArrayList<String> = ArrayList()
 
-    internal fun hibernate(c: Context) {
+        for (i in 0 until appArray.length()) {
+            try {
+                val packageName = appArray.getString(i)
+                commandArray.add("am force-stop $packageName")
+            } catch (e: Exception) {
+                continue
+            }
+        }
+
+        if (commandArray.isNotEmpty()) Root.shell(commandArray.toTypedArray())
+    }
+
+    internal fun hibernateFromUi(c: Context) {
         val appArray = JSONArray(
             PreferenceManager.getDefaultSharedPreferences(c).getString(
                 P.PREF_APP_LIST, P.PREF_APP_LIST_DEFAULT
@@ -96,18 +73,5 @@ object AppHelper {
                 continue
             }
         }
-
-//        //////
-//        val whitelistMusicApps = PreferenceManager.getDefaultSharedPreferences(c)
-//            .getBoolean(P.PREF_ALLOW_MUSIC, P.PREF_ALLOW_MUSIC_DEFAULT)
-//        if (whitelistMusicApps) {
-//            NotificationService.getInstance()?.getPlayingPackageName { packageName ->
-//
-//            }
-//        } else {
-//            hibernateApps(c, null)
-//        }
-
-//        hibernateApps(c)
     }
 }

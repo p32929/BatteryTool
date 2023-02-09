@@ -24,7 +24,7 @@ class ScreenStateReceiver : BroadcastReceiver() {
             isScreenOn = false
             if (getPrefs(c).getBoolean(P.PREF_AUTO_STOP, P.PREF_AUTO_STOP_DEFAULT)) {
                 Handler(Looper.getMainLooper()).postDelayed(
-                    { if (!isScreenOn) AppHelper.hibernate(c) },
+                    { if (!isScreenOn) AppHelper.hibernateFromBackground(c) },
                     getPrefs(c).getInt(P.PREF_AUTO_STOP_DELAY, P.PREF_AUTO_STOP_DELAY_DEFAULT)
                         .toLong() * 1000
                 )

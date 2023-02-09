@@ -11,7 +11,7 @@ import io.github.domi04151309.batterytool.helpers.AppHelper
 class QuickTileService : TileService() {
 
     override fun onClick() {
-        AppHelper.hibernate(this)
+        AppHelper.hibernateFromBackground(this)
         Toast.makeText(this, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
     }
 }

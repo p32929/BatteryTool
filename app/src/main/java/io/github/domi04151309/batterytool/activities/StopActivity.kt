@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Toast
 import io.github.domi04151309.batterytool.R
 import io.github.domi04151309.batterytool.helpers.AppHelper
-import io.github.domi04151309.batterytool.helpers.Root
 
 class StopActivity : Activity() {
 
@@ -15,7 +14,7 @@ class StopActivity : Activity() {
         if (intent.action == Intent.ACTION_CREATE_SHORTCUT) {
             setupShortcut()
         } else {
-            AppHelper.hibernate(this)
+            AppHelper.hibernateFromBackground(this)
             Toast.makeText(this, R.string.toast_stopped_all, Toast.LENGTH_SHORT).show()
 //            Root.shell("input keyevent 26")
         }
